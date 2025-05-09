@@ -1,0 +1,7 @@
+@font-face {
+	font-family: 'HyliaSerif';
+	font-style: normal;
+	font-weight: 400;
+
+	src: url(./HyliaSerif.ttf) format('truetype');
+}

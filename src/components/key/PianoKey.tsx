@@ -3,22 +3,21 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useState, useRef } from 'react';
 import type { SoundManager } from '@/lib/SoundManager';
+import type { INote } from '@/lib/FreqNotes';
 import './PianoKey.css'; // Import CSS for styling
 
 interface KeyProps {
-	note: string;
-	frequency: number;
-	isSharp: boolean;
-	octavePosition: number;
+	labelType: "american" | "italian";
+	note: INote;
 	soundManager: SoundManager;
 }
-export function PianoKey({ note, frequency, isSharp, octavePosition, soundManager }: KeyProps) {
+export function PianoKey({ note, soundManager, labelType }: KeyProps) {
 	const [isPressed, setIsPressed] = useState(false);
 	const keyRef = useRef<HTMLDivElement>(null);
 
 	const handleMouseDown = () => {
 		setIsPressed(true);
-		soundManager.playNote(frequency);
+		soundManager.playNote(note.frequency);
 		if (keyRef.current) {
 			keyRef.current.classList.add('pressed'); // Add 'pressed' class
 		}
@@ -26,7 +25,7 @@ export function PianoKey({ note, frequency, isSharp, octavePosition, soundManage
 
 	const handleMouseUp = () => {
 		setIsPressed(false);
-		soundManager.stopNote(frequency);
+		soundManager.stopNote(note.frequency);
 		if (keyRef.current) {
 			keyRef.current.classList.remove('pressed');
 		}
@@ -34,7 +33,7 @@ export function PianoKey({ note, frequency, isSharp, octavePosition, soundManage
 
 	const handleMouseLeave = () => {
 		setIsPressed(false);
-		soundManager.stopNote(frequency);
+		soundManager.stopNote(note.frequency);
 		if (keyRef.current) {
 			keyRef.current.classList.remove('pressed');
 		}
@@ -43,7 +42,7 @@ export function PianoKey({ note, frequency, isSharp, octavePosition, soundManage
 	const handleTouchStart = (e: { preventDefault: () => void; }) => {
 		e.preventDefault(); // Prevent scrolling on touch
 		setIsPressed(true);
-		soundManager.playNote(frequency);
+		soundManager.playNote(note.frequency);
 		if (keyRef.current) {
 			keyRef.current.classList.add('pressed'); // Add 'pressed' class
 		}
@@ -51,7 +50,7 @@ export function PianoKey({ note, frequency, isSharp, octavePosition, soundManage
 
 	const handleTouchEnd = () => {
 		setIsPressed(false);
-		soundManager.stopNote(frequency);
+		soundManager.stopNote(note.frequency);
 		if (keyRef.current) {
 			keyRef.current.classList.remove('pressed');
 		}
@@ -59,7 +58,7 @@ export function PianoKey({ note, frequency, isSharp, octavePosition, soundManage
 
 	const keyClass = cn(
 		'key',
-		isSharp ? 'sharp' : 'natural',
+		note.isSharp ? 'sharp' : 'natural',
 		isPressed ? 'pressed' : ''
 	);
 
@@ -69,12 +68,12 @@ export function PianoKey({ note, frequency, isSharp, octavePosition, soundManage
 			boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', // Reduce shadow
 		}),
 		transition: isPressed ? 'transform 0.05s ease, box-shadow 0.05s ease' : 'none', // Smooth transition,
-		left: "0px",
 	};
 
-	if (isSharp) {
-		const leftOffset = octavePosition * 40 - 13;
-		style.left = `${leftOffset}px`;
+	let noteName;
+	switch (labelType) {
+		case 'american': noteName = note.note; break;
+		case 'italian': noteName = note.italian; break;
 	}
 
 	return (
@@ -89,7 +88,7 @@ export function PianoKey({ note, frequency, isSharp, octavePosition, soundManage
 			style={style}
 		>
 			{/* Display note name */}
-			<div className="note-name">{note}</div>
+			<div className="note-name">{noteName}</div>
 		</motion.div>
 	);
 };

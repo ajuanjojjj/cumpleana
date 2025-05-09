@@ -1,53 +1,72 @@
-.key {
-	height: 150px;
-	width: 40px;
-	background-color: white;
-	border: 1px solid #ccc;
-	box-sizing: border-box;
+.piano {
 	display: flex;
-	align-items: flex-end;
-	justify-content: center;
-	padding-bottom: 20px;
-	user-select: none;
-	/* Prevent text selection on drag */
-	cursor: pointer;
-	transition: background-color 0.1s ease;
-	border-radius: 6px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	flex: 1;
+}
+
+.octave {
+	display: flex;
+
 	position: relative;
-	/* Needed for absolute positioning of sharps */
-	overflow: clip;
+	width: 100%;
+	aspect-ratio: 7 / 6.4;
+	margin: auto;
+
+	.key {
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+
+		border-bottom-right-radius: 5px;
+		border-bottom-left-radius: 5px;
+
+		.name {
+			display: none;
+			font-size: 10px;
+		}
+	}
+
+	.key.white {
+		flex: 1;
+		background-color: white;
+		color: black;
+		border: 1px solid black;
+		z-index: 1;
+
+		&.pressed {
+			background-color: #aaa;
+		}
+
+		.name {
+			font-size: 12px;
+		}
+	}
+
+	.key.black {
+		position: absolute;
+		width: 8.6%;
+		height: 60%;
+		background-color: black;
+		color: white;
+		z-index: 2;
+
+		&.pressed {
+			background-color: #333;
+		}
+
+		.name {
+			font-size: 11px;
+		}
+	}
 }
 
-.key.sharp {
-	background-color: black;
-	color: white;
-	height: 100px;
-	width: 25px;
-	position: absolute;
-	z-index: 1;
-	border-radius: 4px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-	top: 0;
+.piano.english {
+	.key .english {
+		display: block;
+	}
 }
 
-.key.pressed {
-	background-color: #ddd;
-}
-
-.key.sharp.pressed {
-	background-color: #333;
-}
-
-.note-name {
-	font-size: 0.8em;
-	position: absolute;
-	bottom: 4px;
-	left: 50%;
-	transform: translateX(-50%);
-	color: #555;
-}
-
-.key.sharp .note-name {
-	color: #eee;
+.piano.italian {
+	.key .italian {
+		display: block;
+	}
 }

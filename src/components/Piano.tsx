@@ -1,27 +1,17 @@
-import type { SoundManager } from "@/lib/SoundManager";
-import { PianoKey } from "./key/PianoKey";
+import { Octave } from "./Octave";
+import type { NoteStore } from "@/lib/NoteStore";
 
-interface INote {
-	note: string;
-	italian: string;
-	frequency: number;
-	isSharp: boolean;
-	octavePosition: number;
+
+interface PianoProps {
+	className: string;
+	noteStore: NoteStore;
 }
-export function Piano({ useItalian, notes, soundManager }: { useItalian: boolean, notes: INote[]; soundManager: SoundManager; }) {
-
+export function Piano({ className, noteStore }: PianoProps) {
 	return (
-		<div className="piano">
-			{notes.map((noteData: INote) => (
-				<PianoKey
-					soundManager={soundManager}
-					key={noteData.note}
-					note={useItalian ? noteData.italian : noteData.note}
-					frequency={noteData.frequency}
-					isSharp={noteData.isSharp}
-					octavePosition={noteData.octavePosition}
-				/>
-			))}
+		<div className={`piano ${className}`}>
+			<Octave octave={3} noteStore={noteStore} />
+			<Octave octave={4} noteStore={noteStore} />
+			<Octave octave={5} noteStore={noteStore} />
 		</div>
 	);
 };
