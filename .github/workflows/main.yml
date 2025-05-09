@@ -35,6 +35,8 @@ jobs:
         with:
           node-version: lts/*
           cache: 'npm'
+      - name: Kill Package lock because optional dependencies are not working
+        run: rm -f package-lock.json 
       - name: Install dependencies
         run: npm i 
       - name: Build
