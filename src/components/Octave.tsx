@@ -36,6 +36,8 @@ export function Octave(props: OctaveProps) {
 	);
 }
 
+type TapEvent = React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>;
+
 interface WhiteKeyProps {
 	note: NoteIds;
 	octave: number;
@@ -43,8 +45,14 @@ interface WhiteKeyProps {
 }
 function WhiteKey(props: WhiteKeyProps) {
 	const playingNotes = useSyncExternalStore(props.noteStore.subscribe, props.noteStore.getActiveNotes);
-	const playCallback = useCallback(() => props.noteStore.note("click", props.note, props.octave, true), []);
-	const stopCallback = useCallback(() => props.noteStore.note("click", props.note, props.octave, false), []);
+	const playCallback = useCallback((e: TapEvent) => {
+		e.preventDefault();
+		props.noteStore.note("click", props.note, props.octave, true);
+	}, [props.note, props.noteStore, props.octave]);
+	const stopCallback = useCallback((e: TapEvent) => {
+		e.preventDefault();
+		props.noteStore.note("click", props.note, props.octave, false);
+	}, [props.note, props.noteStore, props.octave]);
 
 	const playing = playingNotes.has(`${props.note}${props.octave}`) ? 'pressed' : '';
 	return (
@@ -72,8 +80,14 @@ interface BlackKeyProps {
 }
 function BlackKey(props: BlackKeyProps) {
 	const playingNotes = useSyncExternalStore(props.noteStore.subscribe, props.noteStore.getActiveNotes);
-	const playCallback = useCallback(() => props.noteStore.note("click", props.note, props.octave, true), [props.note, props.noteStore, props.octave]);
-	const stopCallback = useCallback(() => props.noteStore.note("click", props.note, props.octave, false), [props.note, props.noteStore, props.octave]);
+	const playCallback = useCallback((e: TapEvent) => {
+		e.preventDefault();
+		props.noteStore.note("click", props.note, props.octave, true);
+	}, [props.note, props.noteStore, props.octave]);
+	const stopCallback = useCallback((e: TapEvent) => {
+		e.preventDefault();
+		props.noteStore.note("click", props.note, props.octave, false);
+	}, [props.note, props.noteStore, props.octave]);
 
 	const playing = playingNotes.has(`${props.note}${props.octave}`) ? 'pressed' : '';
 
