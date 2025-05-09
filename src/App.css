@@ -1,0 +1,58 @@
+dialog::backdrop {
+	/* background-image: linear-gradient(45deg, magenta, rebeccapurple, dodgerblue, green); */
+	/* --hdr-gradient: linear-gradient(45deg, color(display-p3 25% 25% 100%) 0%, color(display-p3 100% 85% 30%) 33%, oklch(80% 0.3 163) 66%, oklch(80% 0.3 112) 100%);
+	--sdr-gradient: linear-gradient(to right, #4040ff 0%, #ffd713 33%, #00f382 66%, #c8ca00 100%);
+	background: var(--sdr-gradient); */
+
+	/* animation: gradient 15s ease infinite;
+	background-size: 400% 400%;
+
+	opacity: 0.75; */
+
+}
+
+dialog {
+	margin: auto;
+	border: 0 solid;
+	background-color: antiquewhite;
+	border-radius: 1em;
+	max-width: 60vw;
+	text-align: center;
+}
+
+dialog {
+	transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out,
+		overlay 0.5s ease-in-out allow-discrete,
+		display 0.5s ease-in-out allow-discrete;
+
+	opacity: 0;
+	transform: translateY(1em);
+}
+
+dialog {
+	&::backdrop {
+		transition: display 0.5s allow-discrete, overlay 0.5s allow-discrete,
+			background-color 0.5s;
+		background-color: hsl(0 0 0 / 0);
+	}
+
+	&[open]::backdrop {
+		background-color: hsl(0 0 0 / 50%);
+	}
+}
+
+dialog[open] {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+@starting-style {
+	dialog[open] {
+		opacity: 0;
+		transform: translateY(-1em);
+	}
+
+	dialog[open]::backdrop {
+		background-color: hsl(0 0 0 / 0);
+	}
+}

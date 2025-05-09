@@ -12,7 +12,7 @@ const CONGRATS_DURATIONS = [
 	// 0.5, 0.5, 0.5, 2,
 ];
 
-export function listenTo(store: NoteStore) {
+export function listenTo(store: NoteStore, onPassword: () => void) {
 	let playedNotes: string[] = [];
 	let prevPlayingNotes: string[] = [];
 
@@ -28,7 +28,9 @@ export function listenTo(store: NoteStore) {
 		}
 
 		if (playedNotes.join("") === PASSWORD.join("")) {
-			playCongrats(store);
+			playCongrats(store).then(() => {
+				onPassword();
+			});
 			playedNotes = [];
 		}
 

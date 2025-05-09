@@ -18,9 +18,10 @@ import { listenTo } from './lib/PasswordListener';
 // Main App Component
 // ===============================
 const InteractivePianoApp = () => {
-	const [soundType, setSoundType] = useState<OscillatorType | "custom">('sine');
+	const [soundType, setSoundType] = useState<OscillatorType | "custom">('custom');
 	const [volume, setVolume] = useState(0.8); // Initial volume
 	const [useItalian, setUseItalian] = useState(false);
+	const [showingCongrats, setShownCongrats] = useState(false);
 
 	const [soundManager, setSoundManager] = useState<SoundManager | null>(null);	//Casi que es ref, pero me lo inicializan en click
 	const noteStore = useRef(new NoteStore());
@@ -45,7 +46,7 @@ const InteractivePianoApp = () => {
 		const manager = new SoundManager();
 		setSoundManager(manager);
 		noteStore.current.setSoundManager(manager);
-		listenTo(noteStore.current);
+		listenTo(noteStore.current, () => setShownCongrats(true));
 	}, []);
 
 	const pianoClass = useItalian ? 'italian' : 'english';
@@ -80,6 +81,8 @@ const InteractivePianoApp = () => {
 				<p className="text-gray-400 text-sm mt-4 text-center">
 					Touch the keys or use your mouse to play.  Adjust the sound type and volume using the controls.
 				</p>
+
+				<CongratsModal open={showingCongrats} onClose={() => setShownCongrats(false)} />
 			</div>
 		</div>
 	);
@@ -164,5 +167,26 @@ function NotesLocaleSwitch(props: { useItalian: boolean, toggleNamingConvention:
 				className="bg-gray-700/50 hover:bg-gray-600/50"
 			/>
 		</div>
+	);
+}
+
+function CongratsModal(props: { open: boolean; onClose: () => void; }) {
+	const ref = useRef<HTMLDialogElement>(null);
+
+	useEffect(() => {
+		if (props.open) {
+			ref.current?.showModal();
+		} else {
+			ref.current?.close();
+		}
+	}, [props.open]);
+
+
+	return (
+		<dialog ref={ref} onCancel={props.onClose} className="congrats-modal">
+			<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontFamily: "HyliaSerif, serif", padding: "1rem", fontSize: "3rem" }}>
+				<h2>Tu recompensa se encuentra en la sala de juegos</h2>
+			</div>
+		</dialog>
 	);
 }
