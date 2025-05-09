@@ -1,8 +1,8 @@
 import type { NoteIds, NoteStore } from "./NoteStore";
 
 
-const PASSWORD = "B3 D4 E4  B3 D4 E4  B3 D4 E4 A4 G4".replaceAll("  ", " ").split(" ");
-const CONGRATS = "B3 D4 E4  B3 D4 E4  B3 D4 E4 A4 G4  E4 F4 E4 C4 A3".replaceAll("  ", " ").split(" ");	// Sarias Song //G3 A3 C4 A3
+const PASSWORD = "F3 A3 B3  F3 A3 B3  F3 A3 B3 E4 D4".replaceAll("  ", " ").split(" ");
+const CONGRATS = "F3 A3 B3  F3 A3 B3  F3 A3 B3 E4 D4  B3 C4 B3 G3 E3".replaceAll("  ", " ").split(" ");	// Sarias Song //G3 A3 C4 A3
 
 const CONGRATS_DURATIONS = [
 	0.5, 0.5, 1,
@@ -12,10 +12,10 @@ const CONGRATS_DURATIONS = [
 	// 0.5, 0.5, 0.5, 2,
 ];
 
-
 export function listenTo(store: NoteStore) {
 	let playedNotes: string[] = [];
 	let prevPlayingNotes: string[] = [];
+	window.playCongrats = () => playCongrats(store);
 
 	return store.subscribe((caller) => {
 		if (caller == "congrats") return;	//Don't trigger on congrats notes
