@@ -1,7 +1,7 @@
 import type { NoteStore } from "@/lib/NoteStore";
 import { useCallback, useSyncExternalStore } from "react";
 
-import './key/PianoKey.css'; // Import CSS for styling
+import './Piano.css'; // Import CSS for styling
 
 interface OctaveProps {
 	noteStore: NoteStore;
