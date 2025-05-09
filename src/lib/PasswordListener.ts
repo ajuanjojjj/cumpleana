@@ -15,7 +15,6 @@ const CONGRATS_DURATIONS = [
 export function listenTo(store: NoteStore) {
 	let playedNotes: string[] = [];
 	let prevPlayingNotes: string[] = [];
-	window.playCongrats = () => playCongrats(store);
 
 	return store.subscribe((caller) => {
 		if (caller == "congrats") return;	//Don't trigger on congrats notes
@@ -27,8 +26,6 @@ export function listenTo(store: NoteStore) {
 		if (playedNotes.length > PASSWORD.length) {
 			playedNotes.shift();
 		}
-
-		console.log("Played notes: ", playedNotes.join(" "));
 
 		if (playedNotes.join("") === PASSWORD.join("")) {
 			playCongrats(store);
